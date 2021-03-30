@@ -88,8 +88,14 @@ while winner(tabuleiro) == "-":
         vez = "jogador"
     else:
         coord = [-1, -1]
-        coord[0] = int(input("jogada (linha): "))
-        coord[1] = int(input("jogada (coluna): "))
+        while True:
+            coord[0] = int(input("jogada (linha): "))
+            coord[1] = int(input("jogada (coluna): "))
+            if ((coord[0] < 3) and (coord[1] < 3) and (coord[0] >= 0) and (coord[1] >= 0)) and (tabuleiro[coord[0]][coord[1]] == " "):
+                break
+            print("A posição desejada é inválida!!!")
+            print("Escolha uma posição não preenchida e entre 0 e 2")
+            printTabuleiro(tabuleiro)
         tabuleiro[coord[0]][coord[1]] = jogador
         vez = "ia"
 
