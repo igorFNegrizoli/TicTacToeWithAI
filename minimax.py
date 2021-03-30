@@ -1,4 +1,5 @@
 from math import inf
+
 def winner(tabuleiro):
     winner = " "
 
@@ -24,7 +25,7 @@ def winner(tabuleiro):
                 espacosOcupados += 1
     
     if espacosOcupados == 9:
-        return " "
+        return "Empate"
 
     return "-"
 
@@ -42,10 +43,8 @@ def melhorJogada(tabuleiro):
     tabuleiro[coord[0]][coord[1]] = ia
     return tabuleiro
 
-
-
 def minimax(tabuleiro, prof, maximizacao):
-    pontos = {"X":10, "O":-10, " ":0}
+    pontos = {"X":10, "O":-10, "Empate":0}
     vencedor = winner(tabuleiro)
     if vencedor != "-":
         return pontos[vencedor]
@@ -73,7 +72,7 @@ def minimax(tabuleiro, prof, maximizacao):
 
 def printTabuleiro(tabuleiro):
     for i in tabuleiro:
-        print(i)
+        print(*i, sep = "|")
     print()
 
 tabuleiro = [[" "," "," "],[" "," "," "],[" "," "," "]]
@@ -84,6 +83,8 @@ vez = "ia"
 while winner(tabuleiro) == "-":
     printTabuleiro(tabuleiro)
     if vez == "ia":
+        print("Pensando...")
+        print()
         tabuleiro = melhorJogada(tabuleiro)
         vez = "jogador"
     else:
@@ -91,6 +92,7 @@ while winner(tabuleiro) == "-":
         while True:
             coord[0] = int(input("jogada (linha): "))
             coord[1] = int(input("jogada (coluna): "))
+            print()
             if ((coord[0] < 3) and (coord[1] < 3) and (coord[0] >= 0) and (coord[1] >= 0)) and (tabuleiro[coord[0]][coord[1]] == " "):
                 break
             print("A posição desejada é inválida!!!")
@@ -98,6 +100,7 @@ while winner(tabuleiro) == "-":
             printTabuleiro(tabuleiro)
         tabuleiro[coord[0]][coord[1]] = jogador
         vez = "ia"
+        
 
 printTabuleiro(tabuleiro)
 print(winner(tabuleiro))
