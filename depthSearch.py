@@ -15,14 +15,26 @@ def melhorJogada(tabuleiro):
     tabuleiro[coord[0]][coord[1]] = "X"
     return tabuleiro
 
+def calculaScore(tabuleiro, vencedor):
+    #score = R * 2^(5-i) * 3^(5-d)
+    pontos = {"X":7, "O":-2, "Empate":0}
+    i2 = d = 0
+    for i in range(len(tabuleiro)):
+        for j in range(len(tabuleiro[i])):
+            if tabuleiro[i][j] == " ":
+                i2 += 1
+            if tabuleiro[i][j] == vencedor:
+                d += 1
+    return (pontos[vencedor] * pow(2,5-i2) * pow(3,5-d))
+            
+
 def depthSearch(tabuleiro, vez):
-    pontos = {"X":7, "O":-2, "Empate":2}
     #vez == True -> IA
     #vez == False -> jogador
     
     vencedor = winner(tabuleiro)
     if vencedor != "-":
-        return pontos[vencedor]
+        return calculaScore(tabuleiro, vencedor)
 
     tempResultado = 0
     for i in range(len(tabuleiro)):
