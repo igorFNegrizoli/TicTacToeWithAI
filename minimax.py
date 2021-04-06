@@ -15,33 +15,38 @@ def melhorJogada(tabuleiro):
     tabuleiro[coord[0]][coord[1]] = ia
     return tabuleiro
 
-def minimax(tabuleiro, prof, maximizacao):
-    pontos = {"X":10, "O":-10, "Empate":0}
+def minimax(tabuleiro, prof, turno):
+    pontos = {"X":1, "O":-1, "Empate":0}
     vencedor = winner(tabuleiro)
     if vencedor != "-":
         return pontos[vencedor]
 
-    if maximizacao:
-        melhorScore = -inf
-        for i in range(len(tabuleiro)):
-            for j in range(len(tabuleiro[i])):
-                if tabuleiro[i][j] == " ":
-                    tabuleiro[i][j] = ia
-                    score = minimax(tabuleiro, prof+1, False)
-                    tabuleiro[i][j] = " "
-                    melhorScore = max([score, melhorScore])
-        return melhorScore
+    if turno:
+        return maximiza(tabuleiro, prof)
     else:
-        melhorScore = inf
-        for i in range(len(tabuleiro)):
-            for j in range(len(tabuleiro[i])):
-                if tabuleiro[i][j] == " ":
-                    tabuleiro[i][j] = jogador
-                    score = minimax(tabuleiro, prof+1, True)
-                    tabuleiro[i][j] = " "
-                    melhorScore = min([score, melhorScore])
-        return melhorScore
+        return minimiza(tabuleiro, prof)
 
+def minimiza(tabuleiro, prof):
+    melhorScore = inf
+    for i in range(len(tabuleiro)):
+        for j in range(len(tabuleiro[i])):
+            if tabuleiro[i][j] == " ":
+                tabuleiro[i][j] = jogador
+                score = minimax(tabuleiro, prof+1, True)
+                tabuleiro[i][j] = " "
+                melhorScore = min([score, melhorScore])
+    return melhorScore
+
+def maximiza(tabuleiro, prof):
+    melhorScore = -inf
+    for i in range(len(tabuleiro)):
+        for j in range(len(tabuleiro[i])):
+            if tabuleiro[i][j] == " ":
+                tabuleiro[i][j] = ia
+                score = minimax(tabuleiro, prof+1, False)
+                tabuleiro[i][j] = " "
+                melhorScore = max([score, melhorScore])
+    return melhorScore
 ##
 #Main
 ##
